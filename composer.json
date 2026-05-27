@@ -1,0 +1,9 @@
+{
+    "name": "assessment/product-api",
+    "autoload": {
+        "psr-4": {
+            "App\\": "src/"
+        }
+    },
+    "require": {}
+}
