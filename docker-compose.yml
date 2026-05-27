@@ -16,7 +16,7 @@ services:
       - database
 
   database:
-    image: mariadb:10.11
+    image: mariadb:11.4
     ports:
       - "${DB_PORT}:3306"
     environment:

@@ -68,3 +68,10 @@ Uiteraard! Hier zijn de MoSCoW-prioriteiten (Acceptatiecriteria) uit het documen
 
 * Op deze detailpagina wordt alle mogelijke informatie over het product weergegeven.
 
+### Testen draaien
+
+Je kunt de unit tests uitvoeren binnen de draaiende Docker container met het volgende commando:
+
+```bash
+docker compose exec webserver ./vendor/bin/phpunit
+```

@@ -1,4 +1,4 @@
-FROM php:8.2-apache
+FROM php:8.5-apache
 
 # Installeer systeem afhankelijkheden en PHP extensies
 RUN apt-get update && apt-get install -y \
@@ -15,5 +15,8 @@ RUN sed -ri -e 's!/var/www/html!${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/apache2.
 
 # Installeer Composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
+
+# Vertrouw de projectmap binnen Git om ownership waarschuwingen te voorkomen
+RUN git config --global --add safe.directory /var/www/html
 
 WORKDIR /var/www/html
