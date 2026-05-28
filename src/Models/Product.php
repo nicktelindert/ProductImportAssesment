@@ -37,6 +37,19 @@ class Product
     }
 
     /**
+     * Genereert een URL-vriendelijke "slug" van de titel.
+     */
+    public function getSlug(): string
+    {
+        $slug = strtolower($this->title);
+        $slug = preg_replace('~[^-\w]+~', '', str_replace(' ', '-', $slug));
+        $slug = trim($slug, '-');
+        $slug = preg_replace('~-+~', '-', $slug);
+        
+        return empty($slug) ? 'n-a' : $slug;
+    }
+
+    /**
      * Berekent de prijs na aftrek van de korting.
      */
     public function getDiscountedPrice(): float
