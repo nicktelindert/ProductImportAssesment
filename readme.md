@@ -15,9 +15,6 @@ Uiteraard! Hier zijn de MoSCoW-prioriteiten (Acceptatiecriteria) uit het documen
 
 ### Must have
 
-* De applicatie is gebouwd met als startpunt het zip-bestand dat is meegeleverd met deze opdracht.
-
-
 * Het `composer.json` bestand bevat de benodigde dependencies en de autoloading-configuratie van de eigen code.
 
 
