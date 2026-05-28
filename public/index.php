@@ -1,3 +1,8 @@
 <?php
-// public/index.php
-echo "De Docker omgeving werkt! Apache document root is correct ingesteld.";
+
+require_once __DIR__ . '/../vendor/autoload.php';
+
+use ProductImporter\Controllers\ProductController;
+
+$controller = new ProductController();
+$controller->index();
