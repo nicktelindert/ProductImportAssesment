@@ -6,6 +6,7 @@ use ProductImporter\Controllers\ProductController;
 use ProductImporter\Database;
 use ProductImporter\ErrorHandler;
 use ProductImporter\Repositories\ProductRepository;
+use ProductImporter\Router;
 
 // Registreer de centrale foutafhandeling
 set_exception_handler([ErrorHandler::class, 'handleException']);
@@ -14,5 +15,6 @@ set_exception_handler([ErrorHandler::class, 'handleException']);
 $database = new Database();
 $repository = new ProductRepository($database->getConnection());
 
-$controller = new ProductController($repository);
-$controller->index();
+// Start de Router met de benodigde dependencies voor de controllers
+$router = new Router([$repository]);
+$router->dispatch();
