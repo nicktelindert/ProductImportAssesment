@@ -6,6 +6,8 @@ RUN apt-get update && apt-get install -y \
     unzip \
     libzip-dev \
     && docker-php-ext-install pdo pdo_mysql zip \
+    && pecl install xdebug \
+    && docker-php-ext-enable xdebug \
     && a2enmod rewrite
 
 # Wijzig de Apache Document Root naar /var/www/html/public

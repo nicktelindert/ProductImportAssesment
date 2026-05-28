@@ -1,4 +1,7 @@
 .env
 /vendor
+/coverage-report
+.phpunit.cache
 .idea/
 .vscode/
+products.json
