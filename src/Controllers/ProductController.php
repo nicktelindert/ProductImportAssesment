@@ -25,6 +25,7 @@ class ProductController
         $brands = $this->repository->getUniqueBrands();
 
         // Laad de view en maak $products beschikbaar
+        http_response_code(200);
         require __DIR__ . '/../../views/product_list.php';
     }
 
@@ -36,6 +37,7 @@ class ProductController
             throw new \Exception("Product met ID $id niet gevonden.");
         }
 
+        http_response_code(200);
         require __DIR__ . '/../../views/product_detail.php';
     }
 }
