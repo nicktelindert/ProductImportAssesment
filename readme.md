@@ -1,72 +1,84 @@
 # Product import 
 
-## De opdracht
-De klant wil graag een overzicht van producten die
-beschikbaar zijn via een externe API. Om niet afhankelijk te
-zijn van de beschikbaarheid van de API moeten deze
-producten periodiek geïmporteerd kunnen worden in een
-eigen database waarbij de data vervolgens getoond moet
-worden in een tabel.
-De eis hierbij is dat dit een “Dockerized Application” is,
-zonder gebruik te maken van externe frameworks. Het
-gebruik van externe libraries is toegestaan.
+Deze applicatie is een technische demo voor het importeren van productdata vanuit een externe API naar een lokale database, met een presentatielaag gebouwd volgens het MVC-patroon.
 
-### Must have
+## 🚀 Quick Start
 
-* Het `composer.json` bestand bevat de benodigde dependencies en de autoloading-configuratie van de eigen code.
+1. **Containers opstarten**:
+   ```bash
+   docker compose up -d
+   ```
 
+2. **Dependencies installeren**:
+   ```bash
+   docker compose exec webserver composer install
+   ```
 
-* De applicatie moet op te starten zijn met het commando `docker compose up`.
+3. **Producten importeren**:
+   ```bash
+   docker compose exec webserver php bin/import.php
+   ```
 
+4. **Bekijken**:
+   Ga naar http://localhost:8080 in je browser.
 
-* De Apache document root moet verwijzen naar `/var/www/html/public`.
+## 🛠 Technische Specificaties
 
+### Architectuur
+De applicatie maakt gebruik van een handmatige **MVC (Model-View-Controller)** implementatie onder de namespace `ProductImporter`.
+- **Router**: Een custom router handelt URL-patronen af (`/{controller}/{method}/{id}/{slug}`).
+- **Controllers**: Verwerken requests en communiceren met Repositories.
+- **Repositories**: Beheren de data-access laag met PDO en prepared statements (SQL-injection safe).
+- **Services**: De `Importer` service handelt de communicatie met de DummyJSON API af middels Guzzle.
+- **ErrorHandler**: Gecentraliseerde foutafhandeling die nette HTTP-statuscodes (404/500) en views teruggeeft.
 
-* De database bevat een tabel waarin productinformatie opgeslagen kan worden.
+### Gebruikte technieken
+- PHP 8.5 (Apache)
+- MariaDB 11.4
+- Composer (PSR-4 Autoloading)
+- GuzzleHttp (API Client)
+- PHPUnit (Unit & Integration tests)
+- Xdebug (Code Coverage)
 
+## 📂 Mappenstructuur
+```text
+├── bin/            # CLI scripts (o.a. import.php)
+├── docker/         # Docker configuratie en SQL init
+├── public/         # Document root (index.php, .htaccess)
+├── src/            # Core applicatie code
+│   ├── Controllers/
+│   ├── Models/
+│   ├── Repositories/
+│   └── Services/
+├── tests/          # Unit & Integration tests
+└── views/          # HTML templates
+```
 
-* Er is een manier beschikbaar, met PHP, om de producten te importeren vanuit de API `https://dummyjson.com/products`.
+## 🧪 Testen & Kwaliteit
 
-
-* Minimaal 100 producten vanuit de API moeten worden geïmporteerd.
-
-
-* Via de browser moet een productoverzicht beschikbaar zijn waarvan de productinformatie uit de database komt (dus niet rechtstreeks live van de API).
-
-
-* Het productoverzicht moet de kolommen/gegevens voor **titel**, **prijs**, **merk** en **categorie** bevatten.
-
-
-
-### Should have
-
-* De standaardprijs moet getoond worden met daarbij de kortingsprijs (berekening op basis van het kortingspercentage uit de API).
-
-
-* De prijzen moeten netjes geformatteerd weergegeven worden als een bedrag in euro's.
-
-
-* De thumbnail van het product wordt als afbeelding getoond in het overzicht.
-
-
-
-### Could have
-
-* In het overzicht is het mogelijk om te filteren op categorie en/of merk.
-
-
-* In het overzicht is het mogelijk om te sorteren op alle kolommen.
-
-
-* Via het overzicht is het mogelijk om door te klikken naar een detailpagina van het product.
-
-
-* Op deze detailpagina wordt alle mogelijke informatie over het product weergegeven.
-
-### Testen draaien
-
-Je kunt de unit tests uitvoeren binnen de draaiende Docker container met het volgende commando:
-
+### Tests uitvoeren
+De suite bevat zowel Unit tests (Mapping, Logic) als Integration tests (Database, Routing).
 ```bash
 docker compose exec webserver ./vendor/bin/phpunit
+```
+
+### Code Coverage
+Om een gedetailleerd HTML-rapport van de testdekking te genereren:
+```bash
+docker compose exec -e XDEBUG_MODE=coverage webserver ./vendor/bin/phpunit --coverage-html coverage-report
+```
+
+## 🌐 Routing
+De applicatie gebruikt "Pretty URL's". Zorg ervoor dat de webserver alle requests die niet naar bestaande bestanden wijzen, doorstuurt naar `public/index.php`. 
+
+Voorbeeld URL's:
+- `/` : Productoverzicht (default route naar ProductController).
+- `/product/show/1/essence-mascara` : Detailpagina met SEO-vriendelijke slug.
+
+### .htaccess (Public map)
+```apache
+RewriteEngine On
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^ index.php [QSA,L]
 ```
