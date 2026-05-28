@@ -11,8 +11,6 @@ De eis hierbij is dat dit een “Dockerized Application” is,
 zonder gebruik te maken van externe frameworks. Het
 gebruik van externe libraries is toegestaan.
 
-Uiteraard! Hier zijn de MoSCoW-prioriteiten (Acceptatiecriteria) uit het document overzichtelijk op een rij:
-
 ### Must have
 
 * Het `composer.json` bestand bevat de benodigde dependencies en de autoloading-configuratie van de eigen code.
