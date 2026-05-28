@@ -27,4 +27,15 @@ class ProductController
         // Laad de view en maak $products beschikbaar
         require __DIR__ . '/../../views/product_list.php';
     }
+
+    public function show(int $id): void
+    {
+        $product = $this->repository->findByExternalId($id);
+
+        if (!$product) {
+            throw new \Exception("Product met ID $id niet gevonden.");
+        }
+
+        require __DIR__ . '/../../views/product_detail.php';
+    }
 }

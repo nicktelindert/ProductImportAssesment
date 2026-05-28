@@ -104,7 +104,9 @@ function getSortUrl(string $column, ?string $currentSort, string $currentOrder):
                                 <img src="<?= htmlspecialchars($product->thumbnail) ?>" alt="<?= htmlspecialchars($product->title) ?>" class="thumbnail">
                             <?php endif; ?>
                         </td>
-                        <td><?= htmlspecialchars($product->title) ?></td>
+                        <td>
+                            <a href="/product/show/<?= $product->external_id ?>/<?= $product->getSlug() ?>"><?= htmlspecialchars($product->title) ?></a>
+                        </td>
                         <td><?= htmlspecialchars($product->brand ?? '-') ?></td>
                         <td><span class="badge"><?= htmlspecialchars($product->category) ?></span></td>
                         <td>
