@@ -25,8 +25,11 @@ class ErrorHandler
             );
         }
 
+        $code = $exception->getCode();
+        $statusCode = ($code >= 400 && $code < 600) ? $code : 500;
+
         if (!headers_sent()) {
-            http_response_code(500);
+            http_response_code($statusCode);
         }
 
         $errorMessage = $exception->getMessage();

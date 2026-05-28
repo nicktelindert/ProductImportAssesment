@@ -34,7 +34,7 @@ class ProductController
         $product = $this->repository->findByExternalId($id);
 
         if (!$product) {
-            throw new \Exception("Product met ID $id niet gevonden.");
+            throw new \Exception("Product met ID $id niet gevonden.", 404);
         }
 
         http_response_code(200);
