@@ -33,12 +33,42 @@ class ProductRepository
      * Haalt alle producten op uit de database.
      * @return Product[]
      */
-    public function findAll(): array
+    public function findAll(array $filters = [], ?string $sortBy = null, string $sortOrder = 'ASC'): array
     {
-        $stmt = $this->pdo->query("SELECT * FROM products");
+        $sql = "SELECT * FROM products WHERE 1=1";
+        $params = [];
+
+        if (!empty($filters['category'])) {
+            $sql .= " AND category = :category";
+            $params['category'] = $filters['category'];
+        }
+
+        if (!empty($filters['brand'])) {
+            $sql .= " AND brand = :brand";
+            $params['brand'] = $filters['brand'];
+        }
+
+        $allowedSortColumns = ['title', 'price', 'brand', 'category'];
+        if ($sortBy && in_array($sortBy, $allowedSortColumns)) {
+            $direction = strtoupper($sortOrder) === 'DESC' ? 'DESC' : 'ASC';
+            $sql .= " ORDER BY $sortBy $direction";
+        }
+
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute($params);
         $rows = $stmt->fetchAll();
 
         return array_map(fn($row) => $this->mapToProduct($row), $rows);
+    }
+
+    public function getUniqueCategories(): array
+    {
+        return $this->pdo->query("SELECT DISTINCT category FROM products ORDER BY category")->fetchAll(PDO::FETCH_COLUMN);
+    }
+
+    public function getUniqueBrands(): array
+    {
+        return $this->pdo->query("SELECT DISTINCT brand FROM products WHERE brand IS NOT NULL ORDER BY brand")->fetchAll(PDO::FETCH_COLUMN);
     }
 
     /**
@@ -80,4 +110,6 @@ class ProductRepository
             thumbnail: $row['thumbnail']
         );
     }
+
+    
 }
