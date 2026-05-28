@@ -12,7 +12,17 @@ class ProductController
 
     public function index(): void
     {
-        $products = $this->repository->findAll();
+        $filters = [
+            'category' => $_GET['category'] ?? null,
+            'brand' => $_GET['brand'] ?? null,
+        ];
+
+        $sort = $_GET['sort'] ?? null;
+        $order = $_GET['order'] ?? 'ASC';
+
+        $products = $this->repository->findAll($filters, $sort, $order);
+        $categories = $this->repository->getUniqueCategories();
+        $brands = $this->repository->getUniqueBrands();
 
         // Laad de view en maak $products beschikbaar
         require __DIR__ . '/../../views/product_list.php';

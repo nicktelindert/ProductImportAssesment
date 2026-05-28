@@ -33,6 +33,12 @@ class ProductControllerTest extends TestCase
             ->method('findAll')
             ->willReturn($products);
 
+        $repositoryMock->method('getUniqueCategories')
+            ->willReturn(['test-category']);
+
+        $repositoryMock->method('getUniqueBrands')
+            ->willReturn(['TestBrand']);
+
         $controller = new ProductController($repositoryMock);
 
         // Act
