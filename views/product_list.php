@@ -8,11 +8,13 @@ if (!function_exists('formatPrice')) {
     }
 }
 
-function getSortUrl(string $column, ?string $currentSort, string $currentOrder): string {
-    $params = $_GET;
-    $params['sort'] = $column;
-    $params['order'] = ($currentSort === $column && $currentOrder === 'ASC') ? 'DESC' : 'ASC';
-    return '?' . http_build_query($params);
+if (!function_exists('getSortUrl')) {
+    function getSortUrl(string $column, ?string $currentSort, string $currentOrder): string {
+        $params = $_GET;
+        $params['sort'] = $column;
+        $params['order'] = ($currentSort === $column && $currentOrder === 'ASC') ? 'DESC' : 'ASC';
+        return '?' . http_build_query($params);
+    }
 }
 ?>
 <!DOCTYPE html>
