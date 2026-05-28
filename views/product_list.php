@@ -2,8 +2,10 @@
 /**
  * Helper functie om prijzen te formatteren als Euro's.
  */
-function formatPrice(float $price): string {
-    return '€ ' . number_format($price, 2, ',', '.');
+if (!function_exists('formatPrice')) {
+    function formatPrice(float $price): string {
+        return '€ ' . number_format($price, 2, ',', '.');
+    }
 }
 ?>
 <!DOCTYPE html>
